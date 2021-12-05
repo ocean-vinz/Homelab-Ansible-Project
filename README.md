@@ -1,4 +1,5 @@
 # Homelab-Ansible-Project
-A Collection of my ansible playbook when I studied for RHCE
+This repo was a few collections from hundreds of my ansible-playbook I had made when I studied for RHCE.
+
 
 
