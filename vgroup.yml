@@ -1,0 +1,31 @@
+---
+- name: create partition and vgroup
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: create partition
+    parted: 
+      device: /dev/nvme2n1
+      number: 1
+      state: present
+      flags: [lvm]
+      part_end: 1GiB 
+    when: "'webservers' in group_names"
+
+  - name: create on prod 1
+    parted:
+      device: /dev/nvme2n1
+      number: 1
+      state: present
+      flags: [lvm]
+      part_end: 600MiB
+    when: "'prod1' in group_names"
+
+  - name: create volumegroups
+    lvg:
+     vg: vgroup
+     pvs: /dev/nvme2n1p1
+
+
+

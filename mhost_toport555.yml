@@ -1,0 +1,31 @@
+---
+- name: change the ssh port to xxx
+  hosts: mhost2
+  become: yes
+
+  tasks:
+  - name: adding port 666
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^#PORT'
+      insertafter: '^#PORT'
+      line: 'Port 666'
+
+  - name: adding port 22
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^#PORT'
+      insertafter: '^#PORT'
+      line: 'Port 22'
+      
+  - name: Allow sshd to listen on tcp port 555
+    seport:
+      ports: 666
+      proto: tcp
+      setype: ssh_port_t
+      state: present
+  
+  - name: reset_sshd
+    service:
+      name: sshd
+      state: restarted

@@ -1,0 +1,21 @@
+---
+- name: motd 
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: motd on webservers
+    copy:
+      content: "Welcome to webserver node\n"
+      dest: /etc/motd
+    when: "'webservers' in group_names"
+
+  - name: motd on prod
+    copy:
+      content: "Welcome to Mhost2\n"
+      dest: /etc/motd
+    when: ansible_hostname == 'mhost2'
+  
+  - name: debug
+    debug:
+      msg: this is {{ansible_hostname}}

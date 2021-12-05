@@ -1,0 +1,11 @@
+---
+- name: deploy template hosts
+  become: yes
+  hosts: all
+
+  tasks:
+  - name: deploying j2
+    template:
+      src: hostname.j2
+      dest: /root/host_names
+    when: "'prod1' in group_names"

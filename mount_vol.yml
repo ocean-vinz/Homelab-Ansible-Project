@@ -1,0 +1,27 @@
+---
+- name: mount lvol to vol
+  become: yes
+  hosts: webservers, prod1
+
+  tasks:
+  - name: format xfs
+    filesystem:
+       fstype: xfs
+       dev: /dev/vgroup/vol
+
+  - name: create dir
+    file:
+      path: /volume/vol
+      state: directory
+      mode: '0755'
+
+  - name: mount vol to vol
+    mount:
+      path: /volume/vol
+      src: /dev/vgroup/vol
+      fstype: xfs
+      opts: defaults
+      state: mounted
+
+
+

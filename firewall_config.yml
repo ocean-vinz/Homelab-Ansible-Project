@@ -1,0 +1,30 @@
+---
+- name: configuring firewall
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: in webservers
+    firewalld:
+      service: '{{ item }}'
+      permanent: yes
+      state: enabled
+    loop:
+      - ntp
+      - https
+    when: "'webservers' in group_names"
+    notify: reload_firewall
+
+  - name: in prods
+    firewalld:
+      port: 400-404/tcp
+      permanent: yes
+      state: enabled
+    when: "'prod' in group_names"
+    notify: reload_firewall
+  
+  handlers:
+    - name: reload_firewall
+      service:
+        name: firewalld
+        state: reloaded

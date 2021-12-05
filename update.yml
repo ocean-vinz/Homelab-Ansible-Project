@@ -1,0 +1,10 @@
+---
+- name: update packing
+  hosts: prod1
+  become: yes
+
+  tasks:
+  - name: patching
+    yum:
+      name: '*'
+      state: latest

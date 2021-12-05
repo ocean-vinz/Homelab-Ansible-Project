@@ -1,0 +1,17 @@
+---
+- name: set the context selinux
+  hosts: webservers
+  become: yes
+
+  tasks:
+  - name: set the selinux type
+    sefcontext:
+       target: '/web/html(/.*)?'
+       setype: httpd_sys_content_t
+       state: present
+    notify: restore_config
+
+  handlers:
+  - name: restore_config
+    command: restorecon -irv /web/html
+

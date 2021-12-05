@@ -1,0 +1,4 @@
+{% for host in groups['all'] %}
+{{  hostvars[host]['inventory_hostname'] }} has disk 1 size of {{ hostvars[host]['ansible_devices']['nvme0n1']['size'] | default('NA')  }}
+{{  hostvars[host]['inventory_hostname'] }} has disk 2 size of {{ hostvars[host]['ansible_devices']['nvme1n1']['size'] | default('NA') }}
+{% endfor %}

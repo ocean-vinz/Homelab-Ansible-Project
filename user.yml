@@ -1,0 +1,11 @@
+---
+- name: adding mark as a usr
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: adding mark
+      user:
+        name: mark
+        password: "{{ 'password' | password_hash('sha512', 'mysecretsalt') }}"
+

@@ -1,0 +1,22 @@
+---
+- name: create partition
+  become: yes
+  hosts: all
+  
+  tasks:   
+  - name: Create a new primary partition with a size of 1GiB
+    block:
+     - parted:
+         device: /dev/xvdf
+         number: 1
+         state: present
+         part_end: 200MiB
+    rescue:
+     - parted:
+         device: /dev/nvme1n1
+         number: 1
+         state: present
+         part_end: 200MiB
+    always:
+     - command: "lsblk"
+

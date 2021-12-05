@@ -1,0 +1,31 @@
+---
+- name: firewall
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: instlling firewall
+    yum:
+     name: firewalld
+     state: latest
+
+  - name: starting firewalld
+    service:
+      name: firewalld
+      state: started
+      enabled: yes
+
+  - name: enabling http
+    firewalld:
+       service: http
+       permanent: yes
+       state: enabled
+    notify: reload_firewall
+
+  handlers:
+  - name: reload_firewall
+    service:
+      name: firewalld
+      state: reloaded
+
+  

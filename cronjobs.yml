@@ -1,0 +1,20 @@
+---
+- name: creating cron jobs for rsyslog
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: cron for webservers
+    cron:
+     name: 'restart rsyslog on web'
+     minute: "0"
+     hour: "23,6"
+     job: "systemctl restart rsyslog"
+    when: '"webservers" in group_names'
+  - name: cron for prod 
+    cron:
+     name: 'restart rsyslog on web'
+     minute: "0"
+     hour: "2"
+     job: "systemctl restart rsyslog"
+    when: '"prod" in group_names'

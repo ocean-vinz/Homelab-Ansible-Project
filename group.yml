@@ -1,0 +1,24 @@
+---
+- name: creating group and directory
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: creting dir
+    file:
+      path: /web/html
+      state: directory
+      mode: '0755'
+    when: "'webservers' in groups"
+
+  - name: creating group
+    group:
+      name: testing
+      state: present
+    when: "'webservers' in group_names"
+
+  - name: creating group part 2
+    group:
+      name: networks
+      state: present
+    when: "'prod' in group_names"

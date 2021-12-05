@@ -1,0 +1,31 @@
+---
+- name: task 8 installing services
+  hosts: webservers
+  become: yes
+
+  tasks:
+  - name: installing apache
+    yum:
+      name: httpd
+      state: latest
+  - name: starting apache
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+
+- name: installing mariadb in prod
+  hosts: prod
+  become: yes
+
+  tasks:
+  - name: installing mariadb
+    yum:
+     name: mariadb
+     state: latest
+
+  - name: starting mariadb
+    service:
+      name: mariadb
+      state: started
+      enabled: yes

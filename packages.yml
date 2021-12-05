@@ -1,0 +1,22 @@
+---
+- name: installing packages
+  hosts: webservers
+  become: yes
+
+  tasks:
+  - name: installing samba
+    yum: 
+      name: samba
+      state: latest
+
+- name: installing nfd in prd
+  hosts: prod
+  become: yes
+
+  tasks:
+  - name: installing nfs
+    yum:
+      name: nfs-utils
+      state: latest
+
+

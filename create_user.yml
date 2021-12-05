@@ -1,0 +1,39 @@
+---
+- name: create user from external file
+  hosts: all
+  become: yes
+
+  vars_files:
+     - userdetails.yml
+     - password.yml
+
+  tasks:
+     - name: creating testing group
+       group:
+         name: "{{ item }}"
+         state: present
+       loop:
+         - testing
+         - networks
+     - name: create user on webservers nodes wen department is software and assigned testing groups
+       user: 
+         name: "{{ item.username }}"
+         groups: testing
+         password: "{{ lisa_password | password_hash('sha512') }}"
+       when: "item.department == 'software' and 'webservers' in group_names" 
+       loop:  "{{ users }}"
+     
+     - name: create a user on prod nodes when user's dep in testing and assig group networks
+       user:
+         name: "{{ item.username }}"
+         groups: networks
+         password: "{{  bob_password | password_hash('sha512') }}"
+       when: "item.department == 'testing' and 'prod' in group_names"
+       loop: "{{ users }}"
+
+     - name: create user hr on all managed hosts
+       user:
+         name: "{{ item.username }}"
+         password: "{{ lara_password | password_hash ('sha512') }}"
+       when: item.department == 'hr'
+       loop: "{{ users }}"

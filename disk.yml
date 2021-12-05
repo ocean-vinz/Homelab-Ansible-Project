@@ -1,0 +1,10 @@
+---
+- name: deplot disk j2
+  hosts: all
+  become: yes
+
+  tasks:
+  - template:
+      src: disk.j2
+      dest: /root/disk_size
+    when: "'prod2' in group_names"

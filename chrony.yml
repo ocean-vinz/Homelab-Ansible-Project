@@ -1,0 +1,10 @@
+---
+- name: point ntp to host for all managed hosts
+  hosts: prod2
+  become: yes
+  vars:
+    timesync_ntp_servers:
+    - hostname: 3.25.127.17 
+      iburst: yes
+  roles:
+    - rhel-system-roles.timesync

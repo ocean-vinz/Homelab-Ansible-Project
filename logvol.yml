@@ -1,0 +1,25 @@
+---
+- name: creating the logical volume
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: creating logical volume
+    lvol: 
+      vg: vgroup
+      lv: lvm
+      size: 800m
+    when: "'webservers' in group_names"
+
+  - name: creating lvm in prod1
+    lvol:
+      vg: vgroup
+      lv: lvm
+      size: 500m
+    when: "'prod1' in group_names"
+
+  - name: debug
+    debug:
+      msg: "lvm is not available"
+    when: "'prod2' in group_names"
+

@@ -1,0 +1,7 @@
+---
+- name: webserver roles deplot
+  hosts: webservers
+  become: yes
+
+  roles:
+    - webserver

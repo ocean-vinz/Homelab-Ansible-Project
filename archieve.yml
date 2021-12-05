@@ -1,0 +1,11 @@
+---
+- name: archieve /etc
+  hosts: webservers
+  become: yes
+
+  tasks:
+  - name: archiving etc
+    archive:
+      path: /etc
+      dest: /root/etc.tar
+      format: bz2

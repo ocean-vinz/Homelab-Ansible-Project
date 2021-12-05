@@ -1,0 +1,11 @@
+---
+- name: add passwd to ansible
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: add passwd to ansible user
+    user:
+      name: ansible
+      password: "{{ 'password' | password_hash('sha512') }}"
+      state: present
