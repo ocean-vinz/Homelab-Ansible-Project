@@ -1,0 +1,7 @@
+---
+- name: preparing the ansible control host
+  become: yes
+  hosts: all
+
+  roles:
+    - creating_ansible_control 

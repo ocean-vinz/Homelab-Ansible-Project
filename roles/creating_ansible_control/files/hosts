@@ -1,0 +1,17 @@
+[prod1]
+mhost1 ansible_host=1ad5886fa01c.mylabserver.com
+
+[prod2]
+mhost2 ansible_host=managed2 interpreter_python=/usr/bin/python
+
+[webservers]
+mhost3 ansible_host=5991fee8d41c.mylabserver.com
+mhost4 ansible_host=ad7385d7ed1c.mylabserver.com
+
+[prod:children]
+prod1
+prod2
+
+[linux:children]
+prod
+webservers

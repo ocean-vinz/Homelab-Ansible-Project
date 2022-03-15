@@ -1,0 +1,55 @@
+---
+# tasks file for creating_ansible_control
+- name: installing epel
+  command: "yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y"
+
+- name: install ansible
+  yum:
+    name: '{{ item }}'
+    state: latest
+  loop:
+    - ansible
+
+- name: Creating user ansible
+  user:
+    name: ansible
+    password: "{{ 'password' | password_hash('sha512') }}"
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
+
+- name: Create ansible folder inside ansible home folder
+  file:
+    path: /home/ansible/ansible
+    state: directory
+    mode: '0755'
+
+- name: Copy ansible.cfg into ansible folder
+  copy:
+    src: ansible.cfg
+    dest: /home/ansible/ansible/ansible.cfg
+    mode: '0644'
+    owner: ansible
+    group: ansible
+
+- name: Copy hosts file into ansible folder
+  copy:
+    src: hosts
+    dest: /home/ansible/ansible/hosts
+    mode: '0644'
+    owner: ansible
+    group: ansible
+
+- name: add sudoers for ansible user
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    line: 'ansible ALL=(ALL) NOPASSWD: ALL'
+    validate: /usr/sbin/visudo -cf %s
+ 
+- name: add pub key to ansible user
+  authorized_key:
+    user: ansible
+    state: present
+    key: "{{ lookup('file', '/home/ocean/.ssh/id_rsa.pub') }}"
+
